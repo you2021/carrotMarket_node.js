@@ -10,8 +10,7 @@ router.post('/',  async (req, res) => {
     const check = await login_query(id, auth.encrypt_string(pw));
     if(check.length == 0) return res.status(200).send({status:"failed", code:"1111"})
     let name = check[0].ui_name
-    let cookieJosn = JSON.stringify({"id" : id , "name": name});
-    console.log(cookieJosn)
+    let cookieJosn = auth.sign_cookie({"id" : id , "name": name});
     res.cookie('key',cookieJosn , {
       // maxAge: 1 * 60 * 1000,
       httpOnly:true

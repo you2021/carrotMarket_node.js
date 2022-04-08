@@ -38,14 +38,22 @@ const questionRoute = require('./routes/setting/question');
 const writeAnswerRoute = require('./routes/setting/writeAnswer');
 const answerRoute = require('./routes/setting/answer');
 
+const chattingRoute = require('./routes/chat/chatting');
+const chattingListRoute = require('./routes/chat/chattingList');
+
 const app = express();
+
 const server = require('http').createServer(app)
 server.listen(4000, ()=>{
   console.log("listen 4000 http")
 })
 const io = require('socket.io')
 const socket_io = io(server);
-require('./socket')(socket_io)
+const socket = require('./socket')(socket_io)
+const auth = require('./routes/auth')
+
+// const kocket = require('./socket')(socket_io)
+
 app.get('/image/:name', (req, res)=>{
   console.log("image request")
   var img = fs.readFileSync('./images/'+req.params.name);
@@ -65,6 +73,18 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 //   },
 // }));
  
+
+app.use((req,res,next)=>{
+  if(req.originalUrl.startsWith("/login")){
+    return next()
+  }
+  if(req.cookies.key == null)return res.status(401).send()
+  const cookieJson = auth.decode_cookie(req.cookies.key)
+  if(cookieJson == null) return res.status(401).send()
+  req.udata = cookieJson
+  console.log(req.udata)
+  next()
+})
 app.use('/', pageRoute);
 
 app.use('/join', joinRoute);
@@ -88,6 +108,11 @@ app.use('/writeQuestion', writeQuestionRoute);
 app.use('/question', questionRoute);
 app.use('/writeAnswer', writeAnswerRoute);
 app.use('/answer', answerRoute);
+
+app.use('/socket', socket);
+
+app.use('/chatting', chattingRoute);
+app.use('/chattingList', chattingListRoute);
 
 
 
