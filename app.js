@@ -5,10 +5,10 @@ const morgan = require('morgan');
 const mysql = require('mysql');
 
 let connection =  mysql.createConnection({
-  host : 'localhost',
-  user : 'root',
+  host : 'ls-8edb8d868883759ca9ce1bac8fbe615d76b2a0f8.cwgg3gicmqf1.ap-northeast-2.rds.amazonaws.com',
+  user : 'master',
   password : '1004sky^^',
-  database : 'testdb'
+  database : 'TESTDB'
 });
 global.connection = connection
 
@@ -47,8 +47,8 @@ const fcmRoute = require('./routes/fcm/save');
 const app = express();
 
 const server = require('http').createServer(app)
-server.listen(4000, ()=>{
-  console.log("listen 4000 http")
+server.listen(80, ()=>{
+  console.log("listen 80 http")
 })
 const io = require('socket.io')
 const socket_io = io(server);
