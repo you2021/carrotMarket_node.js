@@ -18,6 +18,7 @@ const pageRoute = require('./routes/page');
 
 const joinRoute = require('./routes/user/join');
 const loginRoute = require('./routes/user/login');
+const loginCheckRoute = require('./routes/user/loginCheck');
 const logoutRoute = require('./routes/user/logout');
 const changeRoute = require('./routes/user/change');
 const managerRoute = require('./routes/user/manager');
@@ -40,6 +41,8 @@ const answerRoute = require('./routes/setting/answer');
 
 const chattingRoute = require('./routes/chat/chatting');
 const chattingListRoute = require('./routes/chat/chattingList');
+
+const fcmRoute = require('./routes/fcm/save');
 
 const app = express();
 
@@ -75,20 +78,22 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
  
 
 app.use((req,res,next)=>{
-  if(req.originalUrl.startsWith("/login")){
+  if(req.originalUrl.startsWith("/login") || req.originalUrl.startsWith("/join")){
     return next()
   }
-  if(req.cookies.key == null)return res.status(401).send()
+  console.log(req.cookies.key)
+  if(req.cookies.key == null)return res.status(401).send({status:"failed", code:"401"})
   const cookieJson = auth.decode_cookie(req.cookies.key)
-  if(cookieJson == null) return res.status(401).send()
+  if(cookieJson == null) return res.status(401).send({status:"failed", code:"401"})
   req.udata = cookieJson
-  console.log(req.udata)
+  // console.log(req.udata)
   next()
 })
 app.use('/', pageRoute);
 
 app.use('/join', joinRoute);
 app.use('/login', loginRoute);
+app.use('/loginCheck', loginCheckRoute);
 app.use('/logout', logoutRoute);
 app.use('/change', changeRoute);
 app.use('/manager', managerRoute);
@@ -113,6 +118,8 @@ app.use('/socket', socket);
 
 app.use('/chatting', chattingRoute);
 app.use('/chattingList', chattingListRoute);
+
+app.use('/save', fcmRoute);
 
 
 

@@ -1,9 +1,12 @@
 const router = require('express').Router();
+const auth = require('../auth')
 
 router.get('/', async(req, res)=> {
 
-    const cookieJson = JSON.parse(req.cookies.key)
-    let id = cookieJson.id
+    if(req.cookies.key == null)return res.status(401).send()
+    const cookieJson = auth.decode_cookie(req.cookies.key)
+    const id = cookieJson.id
+    console.log(id)
 
     try{
         let data = await getList(id)

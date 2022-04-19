@@ -2,7 +2,9 @@ const router = require('express').Router();
 
 router.post('/', async(req, res)=> {
 
-    const room = req.body.room
+    const roomKey = req.body.roomKey
+    const room = `chat_p_${roomKey}`
+    console.log(room)
 
     try{
         let data = await getList(room)

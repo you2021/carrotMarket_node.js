@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async (req, res)=>{
+    console.log("come on : ")
     try{
         let data = await getList()
         res.status(200).send(data)
@@ -23,8 +24,8 @@ router.get('/', async (req, res)=>{
   
   let getList = () => {
       return new Promise((resolve, reject) => {
-          connection.query('SELECT * FROM post', function(err, result){
-  
+          connection.query('SELECT * FROM post order by created_dt DESC', 
+          function(err, result){
               if(err){
                   `err : ${console.log(err)}`
                   reject(err)
