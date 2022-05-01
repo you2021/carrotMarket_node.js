@@ -42,6 +42,10 @@ const answerRoute = require('./routes/setting/answer');
 const chattingRoute = require('./routes/chat/chatting');
 const chattingListRoute = require('./routes/chat/chattingList');
 
+const townRegistrationRoute = require('./routes/town/townRegistration');
+const listRoute = require('./routes/town/list');
+const typeListRoute = require('./routes/town/typeList');
+
 const fcmRoute = require('./routes/fcm/save');
 
 const app = express();
@@ -81,12 +85,11 @@ app.use((req,res,next)=>{
   if(req.originalUrl.startsWith("/login") || req.originalUrl.startsWith("/join")){
     return next()
   }
-  console.log(req.cookies.key)
+
   if(req.cookies.key == null)return res.status(401).send({status:"failed", code:"401"})
   const cookieJson = auth.decode_cookie(req.cookies.key)
   if(cookieJson == null) return res.status(401).send({status:"failed", code:"401"})
   req.udata = cookieJson
-  // console.log(req.udata)
   next()
 })
 app.use('/', pageRoute);
@@ -118,6 +121,10 @@ app.use('/socket', socket);
 
 app.use('/chatting', chattingRoute);
 app.use('/chattingList', chattingListRoute);
+
+app.use('/townRegistration', townRegistrationRoute);
+app.use('/list', listRoute);
+app.use('/typeList', typeListRoute);
 
 app.use('/save', fcmRoute);
 

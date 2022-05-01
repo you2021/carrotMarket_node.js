@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../auth')
 
 router.get('/', async (req, res, next) => {
-    const cookieJson = JSON.parse(req.cookies.key)
-    const id = cookieJson.id;
-   
+
+    if(req.cookies.key == null)return res.status(401).send({status:"failed", code:"401"})
+    const cookieJson = auth.decode_cookie(req.cookies.key)
+    if(cookieJson == null) return res.status(401).send({status:"failed", code:"401"})
+    const id = JSON.parse(cookieJson.key).id
+
     try{
         if(id == null) return res.status(200).send({status:"failed", code:"1111"})
 
@@ -25,7 +29,6 @@ let my_post = (id) => {
                  reject(err)
                  return
             }
-            console.log(result)
             resolve(result)
         });
     })

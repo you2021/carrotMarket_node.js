@@ -8,7 +8,6 @@ router.post('/', async(req, res)=> {
 
     try{
         let data = await getList(room)
-        console.log(data)
         res.status(200).send(data)
     } catch(e){
         res.status(200).send({status:"failed", code:"2222"})

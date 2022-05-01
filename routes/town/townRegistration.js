@@ -1,38 +1,41 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../auth')
 
-router.post('/', async (req, res, next) => {
+router.post('/', async (req, res) => {
 
     if(req.cookies.key == null)return res.status(401).send({status:"failed", code:"401"})
     const cookieJson = auth.decode_cookie(req.cookies.key)
     if(cookieJson == null) return res.status(401).send({status:"failed", code:"401"})
     const id = JSON.parse(cookieJson.key).id
     
-    if(userId == null) return res.status(200).send({status:"failed", code:"1111"})
-    const comment = req.body.comment;
-    const postId = req.body.postId
-
-    try {
-        await write_comment( postId ,userId, comment)
+    try{
+        const type = req.body.type;
+        const contents = req.body.contents;
+    
+        await write(type, contents)
         res.status(200).send({status:"success",code:"0000"})
     }catch(e){
+        console.log(e)
         res.status(200).send({status:"failed", code:"2222"})
     }
 })
 
-let write_comment = (postId, userId, comment) => {
+let write = (type, contents) => {
     return new Promise((resolve, reject)=>{
-        connection.query('INSERT INTO comment(post_id, user_id, comment) VALUES(?,?,?)',
-        [postId, userId, comment],
-        function(err, result, fields){
+        connection.query(`INSERT INTO town(type, contents) VALUES("${type}","${contents}")`,
+        function(err, rows, fields){
             if(err){ 
                  `err : ${console.log(err)} `;
                  reject(err)
+                 console.log(err)
                  return
             }
+          
             resolve()
         });
     })
 }
 
-  module.exports = router;
+
+module.exports = router;

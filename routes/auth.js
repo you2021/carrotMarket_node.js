@@ -9,7 +9,7 @@ module.exports = class{
     }
 
     static sign_cookie = (obj) => {
-        const result = jwt.sign(obj, secretKey, {expiresIn : "30day"})
+        const result = jwt.sign({"key" : obj}, secretKey, {expiresIn : "30day"})
         return result;
     }
 

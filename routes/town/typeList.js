@@ -1,32 +1,21 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', async (req, res)=>{
+router.post('/', async (req, res)=>{
     
-    console.log("come on : ")
+    const type = req.body.type
 
     try{
-        let data = await getList()
+        let data = await getList(type)
         res.status(200).send(data)
     } catch(e){
         res.status(200).send({status:"failed", code:"2222"})
     }
   })
-  
-  router.post('/detail', async(req, res) =>{
-      const num = req.body.num;
-      try{
-          let data = await getList()
-          res.status(200).send(data[num])
-      }catch(e){
-          res.status(200).send({status:"failed", code:"2222"})
-      }
-      
-  })
-  
-  let getList = () => {
+
+  let getList = (type) => {
       return new Promise((resolve, reject) => {
-          connection.query('SELECT * FROM post order by created_dt DESC', 
+          connection.query(`select * from town where type="${type}"`, 
           function(err, result){
               if(err){
                   `err : ${console.log(err)}`
