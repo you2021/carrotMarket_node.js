@@ -5,10 +5,10 @@ const morgan = require('morgan');
 const mysql = require('mysql');
 
 let connection =  mysql.createConnection({
-  host : 'ls-8edb8d868883759ca9ce1bac8fbe615d76b2a0f8.cwgg3gicmqf1.ap-northeast-2.rds.amazonaws.com',
-  user : 'master',
+  host : 'localhost',
+  user : 'root',
   password : '1004sky^^',
-  database : 'TESTDB'
+  database : 'testdb'
 });
 global.connection = connection
 
