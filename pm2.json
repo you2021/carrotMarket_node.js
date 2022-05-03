@@ -1,0 +1,12 @@
+{
+    "apps" : {
+      "name"       : "api-app",
+      "script"     : "./app.js",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "instances"  : 1,
+      "exec_mode"  : "cluster"
+    }
+  }
+  

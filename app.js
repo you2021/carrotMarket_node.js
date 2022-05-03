@@ -4,6 +4,11 @@ const session = require('express-session');
 const morgan = require('morgan');
 const mysql = require('mysql');
 
+const dotenv = require('dotenv').config() 
+require('dotenv').config({path:'./.env.development'}) 
+if(process.env.NODE_ENV == "production")
+  require('dotenv').config({path:'./.env.production'}) 
+
 let connection =  mysql.createConnection({
   host : process.env.db_host,
   user : process.env.db_user,
@@ -11,12 +16,6 @@ let connection =  mysql.createConnection({
   database : process.env.db_database
 });
 global.connection = connection
-
-const dotenv = require('dotenv').config() 
-require('dotenv').config({path:'./.env.development'}) 
-if(process.env.NODE_ENV == "production")
-  require('dotenv').config({path:'./.env.production'}) 
-console.log(process.env)
 const pageRoute = require('./routes/page');
 
 const joinRoute = require('./routes/user/join');
