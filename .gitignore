@@ -3,3 +3,4 @@ images
 *.log
 coverage
 .env
+.env.development

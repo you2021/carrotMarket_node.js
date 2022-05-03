@@ -5,15 +5,18 @@ const morgan = require('morgan');
 const mysql = require('mysql');
 
 let connection =  mysql.createConnection({
-  host : 'localhost',
-  user : 'root',
-  password : '1004sky^^',
-  database : 'testdb'
+  host : process.env.db_host,
+  user : process.env.db_user,
+  password : process.env.db_passwd,
+  database : process.env.db_database
 });
 global.connection = connection
 
 const dotenv = require('dotenv').config() 
-
+require('dotenv').config({path:'./.env.development'}) 
+if(process.env.NODE_ENV == "production")
+  require('dotenv').config({path:'./.env.production'}) 
+console.log(process.env)
 const pageRoute = require('./routes/page');
 
 const joinRoute = require('./routes/user/join');
