@@ -1,6 +1,6 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const auth = require('../auth')
+const aa = require('./join_class')
 
 router.post('/', async (req, res, next) => {
 
@@ -12,45 +12,14 @@ router.post('/', async (req, res, next) => {
     console.log(ui_id, ui_pw, ui_name, city);
 
     try {
-        const result = await idCheck(ui_id)
+        const result = await aa.idCheck(ui_id)
         if(result.length == 1) return res.status(200).send({status:"failed", code:"2222"})
-        await write_join(ui_id, auth.encrypt_string(ui_pw), ui_name, city)
+        await aa.write_join(ui_id, auth.encrypt_string(ui_pw), ui_name, city)
         res.status(200).send({status:"success",code:"0000"})
     }catch(e){
         console.log(e.message)
         res.status(200).send({status:"failed", code:"3333"})
     }
 })
-
-let write_join = (ui_id, ui_pw, ui_name, city) => {
-    return new Promise((resolve, reject)=>{
-        connection.query('INSERT INTO user_info(ui_id, ui_pw, ui_name, city) VALUES(?,?,?,?)',
-        [ui_id, ui_pw, ui_name, city],
-        function(err, result){
-            if(err){ 
-                 `err : ${console.log(err)} `;
-                 reject(err)
-                 return
-            }
-            resolve()
-        });
-    })
-}
-
-let idCheck = (id) => {
-    return new Promise((resolve, reject)=>{
-        connection.query(`select ui_id from user_info where ui_id = '${id}' `,
-        function(err, result){
-            if(err){ 
-                 `err : ${console.log(err)} `;
-                 reject(err)
-                 return
-            }
-            resolve(result);
-        });
-    })
-  }
-
-
 
 module.exports = router;

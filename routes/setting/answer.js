@@ -1,11 +1,12 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
+const aa = require('./answer_class')
+
 
 router.post('/', async (req, res)=>{
     const no = req.body.no;
     
     try{
-        let data = await answer(no)
+        let data = await aa.answer(no)
         console.log(data)
         res.status(200).send(data)
     } catch(e){
@@ -13,21 +14,6 @@ router.post('/', async (req, res)=>{
     }
   })
   
-  let answer = (no) => {
-      return new Promise((resolve, reject) => {
-          connection.query(`SELECT * FROM answer where no = '${no}'`,
-           function(err, result){
-  
-              if(err){
-                  `err : ${console.log(err)}`
-                  reject(err)
-                  return
-              }
-              console.log(result)
-              resolve(result);
-  
-          })
-      })
-  }
+
 
   module.exports = router;

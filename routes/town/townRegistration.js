@@ -1,6 +1,7 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const auth = require('../auth')
+const aa = require('./tr_class')
+
 
 router.post('/', async (req, res) => {
 
@@ -13,7 +14,7 @@ router.post('/', async (req, res) => {
         const type = req.body.type;
         const contents = req.body.contents;
     
-        await write(type, contents)
+        await aa.write(type, contents)
         res.status(200).send({status:"success",code:"0000"})
     }catch(e){
         console.log(e)
@@ -21,21 +22,7 @@ router.post('/', async (req, res) => {
     }
 })
 
-let write = (type, contents) => {
-    return new Promise((resolve, reject)=>{
-        connection.query(`INSERT INTO town(type, contents) VALUES("${type}","${contents}")`,
-        function(err, rows, fields){
-            if(err){ 
-                 `err : ${console.log(err)} `;
-                 reject(err)
-                 console.log(err)
-                 return
-            }
-          
-            resolve()
-        });
-    })
-}
+
 
 
 module.exports = router;

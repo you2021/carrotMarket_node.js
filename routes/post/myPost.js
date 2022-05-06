@@ -1,6 +1,6 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const auth = require('../auth')
+const aa = require('./mp_class')
 
 router.get('/', async (req, res, next) => {
 
@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
     try{
         if(id == null) return res.status(200).send({status:"failed", code:"1111"})
 
-       const data =  await my_post(id)
+       const data =  await aa.my_post(id)
         res.status(200).send(data)
     }catch(e){
         console.log(e)
@@ -20,18 +20,17 @@ router.get('/', async (req, res, next) => {
     }
 })
 
-let my_post = (id) => {
-    return new Promise((resolve, reject)=>{
-        connection.query(`select * from post where user_id="${id}"` ,
-        function(err, result, fields){
-            if(err){ 
-                 `err : ${console.log(err)} `;
-                 reject(err)
-                 return
-            }
-            resolve(result)
-        });
-    })
-}
+router.post('/detail', async(req, res) =>{
+    const num = req.body.num;
+    try{
+      
+        let data = await aa.getDetail(num)
+        console.log(data)
+        res.status(200).send(data[0])
+    }catch(e){
+        res.status(200).send({status:"failed", code:"2222"})
+    }
+    
+})
 
 module.exports = router;

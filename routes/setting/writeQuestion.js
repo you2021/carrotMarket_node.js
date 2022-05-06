@@ -1,5 +1,6 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
+const aa = require('./question_calss')
+
 
 router.post('/', async (req, res, next) => {
     try{
@@ -10,16 +11,7 @@ router.post('/', async (req, res, next) => {
         const tittle = req.body.tittle;
         const content = req.body.content;
 
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = now.getMonth();
-        const date = now.getDate();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const sec = now.getSeconds();
-
-        const dateTime = `${year}-${month}-${date} ${hours}:${minutes}:${sec}`
-        await write_question(id, tittle, content, dateTime)
+        await aa.write_question(id, tittle, content)
         res.status(200).send({status:"success",code:"0000"})
     }catch(e){
         console.log(e)
@@ -27,19 +19,5 @@ router.post('/', async (req, res, next) => {
     }
 })
 
-let write_question = (user_id, tittle, content, dateTime) => {
-    return new Promise((resolve, reject)=>{
-        connection.query('INSERT INTO question(user_id, tittle, content, dateTime) VALUES(?,?,?,?)',
-        [user_id,tittle, content, dateTime],
-        function(err, result){
-            if(err){ 
-                 `err : ${console.log(err)} `;
-                 reject(err)
-                 return
-            }
-            resolve()
-        });
-    })
-}
 
 module.exports = router;

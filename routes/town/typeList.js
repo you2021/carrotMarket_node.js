@@ -1,31 +1,18 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router()
+const aa = require('./typeList_class')
+
 
 router.post('/', async (req, res)=>{
     
     const type = req.body.type
 
     try{
-        let data = await getList(type)
+        let data = await aa.getList(type)
         res.status(200).send(data)
     } catch(e){
         res.status(200).send({status:"failed", code:"2222"})
     }
   })
 
-  let getList = (type) => {
-      return new Promise((resolve, reject) => {
-          connection.query(`select * from town where type="${type}"`, 
-          function(err, result){
-              if(err){
-                  `err : ${console.log(err)}`
-                  reject(err)
-                  return
-              }
-              resolve(result);
   
-          })
-      })
-  }
-
   module.exports = router;

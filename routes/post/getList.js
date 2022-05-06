@@ -1,7 +1,6 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const auth = require('../auth')
-
+const aa = require('./getList_class')
 
 router.get('/', async (req, res)=>{
     
@@ -12,10 +11,9 @@ router.get('/', async (req, res)=>{
     console.log(id)
 
     try{
-        let cityT = await get_city(id)
+        let cityT = await aa.get_city(id)
         let city = cityT[0].city
-        let data = await getList(city)
-        console.log(data)
+        let data = await aa.getList(city)
         res.status(200).send(data)
     } catch(e){
         res.status(200).send({status:"failed", code:"2222"})
@@ -25,44 +23,16 @@ router.get('/', async (req, res)=>{
   router.post('/detail', async(req, res) =>{
       const num = req.body.num;
       try{
-          let data = await getList()
-          res.status(200).send(data[num])
+        
+          let data = await aa.getDetail(num)
+          console.log(data)
+          res.status(200).send(data[0])
       }catch(e){
           res.status(200).send({status:"failed", code:"2222"})
       }
       
   })
-  
-  let getList = (city) => {
-      return new Promise((resolve, reject) => {
-          connection.query(`SELECT * FROM post where city = "${city}" order by created_dt DESC`, 
-          function(err, result){
-              if(err){
-                  `err : ${console.log(err)}`
-                  reject(err)
-                  return
-              }
-              resolve(result);
-  
-          })
-      })
-  }
-
-  let get_city = (id) => {
-    return new Promise((resolve, reject) => {
-        connection.query(`select city from user_info where ui_id="${id}"`, 
-        function(err, result){
-
-            if(err){
-                `err : ${console.log(err)}`
-                reject(err)
-                return
-            }
-
-            resolve(result);
-
-        })
-    })
-}
+  //mysql2를 이용하되, connection pool 써라
+  //pool.query(`SELECT * FROM post where city = ? order by created_dt DESC`, [city])
 
   module.exports = router;

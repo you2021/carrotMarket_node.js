@@ -1,6 +1,7 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
 const auth = require('../auth')
+const aa = require('./fcm_class')
+
 
 router.post('/', async (req, res) => {
 
@@ -15,7 +16,7 @@ router.post('/', async (req, res) => {
     try{
         const fcmNo = req.body.fcmNo;
 
-        await write_fcm(id, fcmNo)
+        await aa.write_fcm(id, fcmNo)
         res.status(200).send({status:"success",code:"0000"})
     }catch(e){
         console.log(e)
@@ -23,21 +24,5 @@ router.post('/', async (req, res) => {
     }
 })
 
-let write_fcm = (id, fcm) => {
-    return new Promise((resolve, reject)=>{
-        connection.query(`INSERT INTO fcmInfo(id, fcmNo) 
-                    VALUES("${id}","${fcm}")`,
-        function(err, rows, fields){
-            if(err){ 
-                 `err : ${console.log(err)} `;
-                 reject(err)
-                 console.log(err)
-                 return
-            }
-        
-            resolve()
-        });
-    })
-}
 
 module.exports = router;

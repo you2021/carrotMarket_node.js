@@ -2,20 +2,29 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const morgan = require('morgan');
-const mysql = require('mysql');
+// const routers = require('./routes/indexs') 
+
 
 const dotenv = require('dotenv').config() 
+
+// require('./db')
+
+const mysql2 = require('mysql2');
 require('dotenv').config({path:'./.env.development'}) 
 if(process.env.NODE_ENV == "production")
   require('dotenv').config({path:'./.env.production'}) 
 
-let connection =  mysql.createConnection({
+let pool =  mysql2.createPool({
+
   host : process.env.db_host,
   user : process.env.db_user,
   password : process.env.db_passwd,
-  database : process.env.db_database
+  database : process.env.db_database,
+  connectionLimit : 1
+
 });
-global.connection = connection
+global.pool = pool
+
 const pageRoute = require('./routes/page');
 
 const joinRoute = require('./routes/user/join');
@@ -30,6 +39,8 @@ const getListRoute = require('./routes/post/getList');
 const deleteRoute = require('./routes/post/delete');
 const updateRoute = require('./routes/post/update');
 const myPostRoute = require('./routes/post/myPost');
+const favoriteRoute = require('./routes/post/favorite');
+const infavoriteRoute = require('./routes/post/interestFavorite');
 
 const writeCommentRoute = require('./routes/comment/writeComment');
 const commentListRoute = require('./routes/comment/commentList');
@@ -50,6 +61,7 @@ const typeListRoute = require('./routes/town/typeList');
 
 const fcmRoute = require('./routes/fcm/save');
 
+
 const app = express();
 
 const server = require('http').createServer(app)
@@ -60,8 +72,6 @@ const io = require('socket.io')
 const socket_io = io(server);
 const socket = require('./socket')(socket_io)
 const auth = require('./routes/auth')
-
-// const kocket = require('./socket')(socket_io)
 
 app.get('/image/:name', (req, res)=>{
   console.log("image request")
@@ -108,6 +118,8 @@ app.use('/getList', getListRoute);
 app.use('/update', updateRoute);
 app.use('/delete', deleteRoute);
 app.use('/myPost', myPostRoute);
+app.use('/favorite', favoriteRoute);
+app.use('/interestFavorite', infavoriteRoute);
 
 app.use('/writeComment', writeCommentRoute);
 app.use('/commentList', commentListRoute);

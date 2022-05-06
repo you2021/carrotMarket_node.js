@@ -1,31 +1,19 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
+const aa = require('./list_class')
+
 
 router.get('/', async (req, res)=>{
     
     console.log("come on : ")
 
     try{
-        let data = await getList()
+        let data = await aa.getList()
         res.status(200).send(data)
     } catch(e){
         res.status(200).send({status:"failed", code:"2222"})
     }
   })
   
-  let getList = () => {
-      return new Promise((resolve, reject) => {
-          connection.query('SELECT * FROM town order by time DESC', 
-          function(err, result){
-              if(err){
-                  `err : ${console.log(err)}`
-                  reject(err)
-                  return
-              }
-              resolve(result);
   
-          })
-      })
-  }
 
   module.exports = router;

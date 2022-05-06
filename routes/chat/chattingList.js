@@ -1,4 +1,5 @@
-const router = require('express').Router();
+const router = require('express').Router()
+const aa = require('./chat_class')
 
 router.post('/', async(req, res)=> {
 
@@ -7,7 +8,7 @@ router.post('/', async(req, res)=> {
     console.log(room)
 
     try{
-        let data = await getList(room)
+        let data = await aa.getchat_user(room)
         res.status(200).send(data)
     } catch(e){
         res.status(200).send({status:"failed", code:"2222"})
@@ -15,20 +16,5 @@ router.post('/', async(req, res)=> {
 
 })
 
-let getList = (room) => {
-    return new Promise((resolve, reject) => {
-        connection.query(`select * from chat_user where room = "${room}" order by dateTime asc`,
-                function(err, result){
-
-            if(err){
-                `err : ${console.log(err)}`
-                reject(err)
-                return
-            }
-            resolve(result);
-
-        })
-    })
-}
 
 module.exports = router;

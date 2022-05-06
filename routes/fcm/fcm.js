@@ -1,7 +1,7 @@
 const admin = require('firebase-admin')
 let serAccount = require('../../fcmproject-c5d53-firebase-adminsdk-481yq-e48548a457.json')
-const express = require('express')
-const router = express.Router()
+const router = require('express').Router()
+const aa = require('./fcm_class')
 
 admin.initializeApp({
     credential: admin.credential.cert(serAccount),
@@ -11,7 +11,7 @@ admin.initializeApp({
 
     try{
         const id = req.body.id
-        const fcm = await get_fcm(id)
+        const fcm = await aa.get_fcm(id)
 
         let message = {
             data: {
@@ -39,21 +39,6 @@ admin.initializeApp({
     }
 })
 
-let get_fcm = (id) => {
-    return new Promise((resolve, reject)=>{
-        connection.query(`select fcmNo from fcmInfo where id = "${id}"`,
-        function(err, result, fields){
-            if(err){ 
-                 `err : ${console.log(err)} `;
-                 reject(err)
-                 console.log(err)
-                 return
-            }
-        
-            resolve(result)
-        });
-    })
-}
 
 module.exports = router;
 

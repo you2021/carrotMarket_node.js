@@ -1,8 +1,11 @@
-const express = require('express');
-const router = express.Router();
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const router = require('express').Router()
+const multer = require('multer')
+const path = require('path')
+const fs = require('fs')
+const auth = require('../auth')
+const aa = require('./regi_class')
+const bb = require('./getList_class')
+
 
 try {
     fs.readdirSync('images');
@@ -28,8 +31,10 @@ try {
 
 router.post('/', async (req, res) => {
 
-    const cookieJson = JSON.parse(req.cookies.key)
-    let id = cookieJson.id
+  if(req.cookies.key == null) return res.status(200).send({status:"failed", code:"1111"})
+  const cookieJson = auth.decode_cookie(req.cookies.key)
+  if(cookieJson == null) return res.status(200).send({status:"failed", code:"1111"})
+  const id = JSON.parse(cookieJson.key).id
 
     if(req.cookies.key == null) return res.status(200).send({status:"success",code:"0000"})
     if(id == null) return res.status(200).send({status:"failed", code:"1111"})
@@ -40,8 +45,10 @@ router.post('/', async (req, res) => {
         const tittle = req.body.tittle;
         const image = req.body.image
 
-        // let dateTime = require('../../utility/util').getTime()
-        await write_post(id, tittle, image, comment, category, price)
+        let cityT = await bb.get_city(id)
+        let city = cityT[0].city
+
+        await aa.write_post(id, tittle, image, comment, category, price, city)
         res.status(200).send({status:"success",code:"0000"})
     }catch(e){
         console.log(e)
@@ -49,29 +56,14 @@ router.post('/', async (req, res) => {
     }
 })
 
-let write_post = (id, tittle, image, comment, category, price) => {
-    return new Promise((resolve, reject)=>{
-        connection.query(`INSERT INTO post(user_id, tittle, image, comment, category, price) 
-                    VALUES("${id}","${tittle}","${image}","${comment}","${category}","${price}")`,
-        function(err, rows, fields){
-            if(err){ 
-                 `err : ${console.log(err)} `;
-                 reject(err)
-                 console.log(err)
-                 return
-            }
-          
-            resolve()
-        });
-    })
-}
-
-
 router.post('/thumbnail_upload', upload.array('image'), async (req, res, next) => {
-  const cookieJson = JSON.parse(req.cookies.key)
-  let id = cookieJson.id
-  if(req.cookies.key == null) return res.status(200).send({status:"success",code:"0000"})
+
+  if(req.cookies.key == null) return res.status(200).send({status:"failed", code:"1111"})
+  const cookieJson = auth.decode_cookie(req.cookies.key)
+  if(cookieJson == null) return res.status(200).send({status:"failed", code:"1111"})
+  const id = JSON.parse(cookieJson.key).id
   if(id == null) return res.status(200).send({status:"failed", code:"1111"})
+
   try{
      var filename = new Array()
       let length = req.files.length 

@@ -1,10 +1,11 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router()
+const aa = require('./comment_class')
+
 
 router.post('/', async(req, res) =>{
     const postId = req.body.postId;
     try{
-        let data = await getCommentList(postId)
+        let data = await aa.getCommentList(postId)
         console.log(data)
         res.status(200).send(data)
     }catch(e){
@@ -12,21 +13,5 @@ router.post('/', async(req, res) =>{
     }
     
 })
-
-let getCommentList = (postId) => {
-    return new Promise((resolve, reject) => {
-        connection.query(`SELECT * FROM comment where post_id = '${postId}'`, function(err, result){
-
-            if(err){
-                `err : ${console.log(err)}`
-                reject(err)
-                return
-            }
-        
-            resolve(result);
-
-        })
-    })
-}
 
   module.exports = router;
