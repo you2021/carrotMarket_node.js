@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const auth = require('../auth')
 const aa = require('./login_class')
-// const pool = require('../../db')
  
 router.post('/',  async (req, res) => {
     let id = req.body.id
@@ -22,10 +21,7 @@ router.post('/',  async (req, res) => {
       });
 
       res.status(200).send({status:"success", code:"0000", cookie : auth.sign_cookie(cookieJosn)})
-      
-      // pool.getConnection(async (err, con) =>{
-      //   con.release()
-      // })
+  
     }catch{
         res.status(200).send({status:"failed", code:"2222"})
     }

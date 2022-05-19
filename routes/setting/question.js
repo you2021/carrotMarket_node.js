@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const aa = require('./question_calss')
+const auth = require('../auth')
 
 
 router.get('/', async (req, res)=>{
@@ -14,7 +15,7 @@ router.get('/', async (req, res)=>{
   router.post('/detail', async(req, res) =>{
     const num = req.body.num;
     try{
-        let data = await get_question()
+        let data = await aa.get_question()
         res.status(200).send(data[num])
     }catch(e){
         res.status(200).send({status:"failed", code:"2222"})

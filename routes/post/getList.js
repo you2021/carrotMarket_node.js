@@ -25,7 +25,6 @@ router.get('/', async (req, res)=>{
       try{
         
           let data = await aa.getDetail(num)
-          console.log(data)
           res.status(200).send(data[0])
       }catch(e){
           res.status(200).send({status:"failed", code:"2222"})

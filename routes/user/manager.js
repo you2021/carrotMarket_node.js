@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const aa = require('./join_class')
+const aa = require('./manager_class')
+const auth = require('../auth')
 
 
 router.get('/', async (req, res)=>{

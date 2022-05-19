@@ -7,18 +7,18 @@ router.post('/', async (req, res, next) => {
     const ui_id = req.body.ui_id
     const ui_pw = req.body.ui_pw
     const ui_name = req.body.ui_name
-    const city = req.body.city
 
     try {
 
         let cookieJosn = JSON.stringify({"id" : ui_id , "name": ui_name});
+        console.log(cookieJosn)
         res.cookie('key',auth.sign_cookie(cookieJosn) , {
             maxAge: 60 * 60 * 1000 * 4,  // 4시간
             httpOnly:true
          });
 
-        await aa.write_join(ui_id, auth.encrypt_string(ui_pw), ui_name, city)
-        res.status(200).send({status:"success",code:"0000"})
+        await aa.write_join(ui_id, auth.encrypt_string(ui_pw), ui_name)
+        res.status(200).send({status:"success",code:"0000", cookie : auth.sign_cookie(cookieJosn)})
     }catch(e){
         console.log(e.message)
         res.status(200).send({status:"failed", code:"3333"})
