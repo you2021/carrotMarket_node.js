@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const auth = require('../auth')
-const aa = require('./change_class')
+const aa = require('../../db/user/change')
 
 
 router.post('/', async (req, res)=>{

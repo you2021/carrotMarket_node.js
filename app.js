@@ -2,65 +2,10 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const morgan = require('morgan');
-// const routers = require('./routes/indexs') 
-
 
 const dotenv = require('dotenv').config() 
 
-// require('./db')
-
-const mysql2 = require('mysql2');
-require('dotenv').config({path:'./.env.development'}) 
-if(process.env.NODE_ENV == "production")
-  require('dotenv').config({path:'./.env.production'}) 
-
-let pool =  mysql2.createPool({
-
-  host : process.env.db_host,
-  user : process.env.db_user,
-  password : process.env.db_passwd,
-  database : process.env.db_database,
-  connectionLimit : 1
-
-});
-global.pool = pool
-
-const pageRoute = require('./routes/page');
-
-const joinRoute = require('./routes/user/join');
-const loginRoute = require('./routes/user/login');
-const loginCheckRoute = require('./routes/user/loginCheck');
-const logoutRoute = require('./routes/user/logout');
-const changeRoute = require('./routes/user/change');
-const managerRoute = require('./routes/user/manager');
-
-const registrationRoute = require('./routes/post/registration');
-const getListRoute = require('./routes/post/getList');
-const deleteRoute = require('./routes/post/delete');
-const updateRoute = require('./routes/post/update');
-const myPostRoute = require('./routes/post/myPost');
-const favoriteRoute = require('./routes/post/favorite');
-const infavoriteRoute = require('./routes/post/interestFavorite');
-
-const writeCommentRoute = require('./routes/comment/writeComment');
-const commentListRoute = require('./routes/comment/commentList');
-
-const writeNoticeRoute = require('./routes/setting/writeNotice');
-const noticeRoute = require('./routes/setting/notice');
-const writeQuestionRoute = require('./routes/setting/writeQuestion');
-const questionRoute = require('./routes/setting/question');
-const writeAnswerRoute = require('./routes/setting/writeAnswer');
-const answerRoute = require('./routes/setting/answer');
-
-const chattingRoute = require('./routes/chat/chatting');
-const chattingListRoute = require('./routes/chat/chattingList');
-
-const townRegistrationRoute = require('./routes/town/townRegistration');
-const listRoute = require('./routes/town/list');
-const typeListRoute = require('./routes/town/typeList');
-
-const fcmRoute = require('./routes/fcm/save');
-
+require('./db/index')
 
 const app = express();
 
@@ -82,16 +27,6 @@ app.get('/image/:name', (req, res)=>{
 app.use(express.urlencoded({extended: false}))
 app.use(express.json({limit:"50mb"}))
 app.use(cookieParser(process.env.COOKIE_SECRET));
-// app.use(session({
-//   resave: false,
-//   saveUninitialized: false,
-//   secret: process.env.COOKIE_SECRET,
-//   cookie: {
-//     httpOnly: true,
-//     secure: false,
-//   },
-// }));
- 
 
 app.use((req,res,next)=>{
   if(req.originalUrl.startsWith("/login") || req.originalUrl.startsWith("/join")){
@@ -104,45 +39,9 @@ app.use((req,res,next)=>{
   req.udata = cookieJson
   next()
 })
-app.use('/', pageRoute);
-
-app.use('/join', joinRoute);
-app.use('/login', loginRoute);
-app.use('/loginCheck', loginCheckRoute);
-app.use('/logout', logoutRoute);
-app.use('/change', changeRoute);
-app.use('/manager', managerRoute);
-
-app.use('/registration', registrationRoute);
-app.use('/getList', getListRoute);
-app.use('/update', updateRoute);
-app.use('/delete', deleteRoute);
-app.use('/myPost', myPostRoute);
-app.use('/favorite', favoriteRoute);
-app.use('/interestFavorite', infavoriteRoute);
-
-app.use('/writeComment', writeCommentRoute);
-app.use('/commentList', commentListRoute);
-
-app.use('/writeNotice', writeNoticeRoute);
-app.use('/notice', noticeRoute);
-app.use('/writeQuestion', writeQuestionRoute);
-app.use('/question', questionRoute);
-app.use('/writeAnswer', writeAnswerRoute);
-app.use('/answer', answerRoute);
 
 app.use('/socket', socket);
-
-app.use('/chatting', chattingRoute);
-app.use('/chattingList', chattingListRoute);
-
-app.use('/townRegistration', townRegistrationRoute);
-app.use('/list', listRoute);
-app.use('/typeList', typeListRoute);
-
-app.use('/save', fcmRoute);
-
-
+app.use(require('./routes/indexs'))
 
 app.use((req, res, next) => {
     const error =  new Error(`${req.method} ${req.url} 라우터가 없습니다.`);

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const aa = require('./comment_class')
+const aa = require('../../db/comment/comment')
 
 
 router.post('/', async (req, res, next) => {

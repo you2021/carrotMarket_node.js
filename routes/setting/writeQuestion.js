@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const aa = require('./question_calss')
+const aa = require('../../db/setting/question')
 
 
 router.post('/', async (req, res, next) => {

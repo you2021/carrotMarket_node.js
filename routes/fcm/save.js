@@ -1,11 +1,10 @@
 const router = require('express').Router();
 const auth = require('../auth')
-const aa = require('./fcm_class')
+const aa = require('../../db/fcm/fcm')
 
 
 router.post('/', async (req, res) => {
 
-    console.log(req.cookies.key)
     if(req.cookies.key == null)return res.status(401).send({status:"failed", code:"401"})
     const cookieJson = auth.decode_cookie(req.cookies.key)
     if(cookieJson == null) return res.status(401).send({status:"failed", code:"401"})

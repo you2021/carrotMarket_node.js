@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const aa = require('./list_class')
+const aa = require('../../db/town/list')
 
 
 router.get('/', async (req, res)=>{

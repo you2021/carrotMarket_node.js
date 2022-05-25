@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const aa = require('./updare_class')
+const aa = require('../../db/post/update')
 
 
 router.post('/', async(req, res) =>{

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const aa = require('./notice_calss')
+const aa = require('../../db/setting/notice')
 
 
 router.post('/', async (req, res, next) => {

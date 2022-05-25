@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const auth = require('../auth')
-const aa = require('./join_class')
+const aa = require('../../db/user/join')
 
 router.post('/', async (req, res, next) => {
 

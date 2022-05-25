@@ -1,43 +1,43 @@
 const router = require('express').Router()
 
-router.router = {
-    
-pageRoute  : require('./routes/page'),
- joinRoute : require('./routes/user/join'),
- loginRoute : require('./routes/user/login'),
- loginCheckRoute : require('./routes/user/loginCheck'),
- logoutRoute : require('./routes/user/logout'),
- changeRoute : require('./routes/user/change'),
- managerRoute : require('./routes/user/manager'),
 
- registrationRoute : require('./routes/post/registration'),
- getListRoute : require('./routes/post/getList'),
- deleteRoute : require('./routes/post/delete'),
- updateRoute : require('./routes/post/update'),
- myPostRoute : require('./routes/post/myPost'),
+router.use('/', require('./page'))
 
- writeCommentRoute : require('./routes/comment/writeComment'),
- commentListRoute : require('./routes/comment/commentList'),
+router.use('/join', require('./user/join'))
+router.use('/join', require('./user/login'))
+router.use('/loginCheck', require('./user/loginCheck'))
+router.use('/logout', require('./user/logout'))
+router.use('/change', require('./user/change'))
+router.use('/manager', require('./user/manager'))
 
- writeNoticeRoute : require('./routes/setting/writeNotice'),
- noticeRoute : require('./routes/setting/notice'),
- writeQuestionRoute : require('./routes/setting/writeQuestion'),
- questionRoute : require('./routes/setting/question'),
- writeAnswerRoute : require('./routes/setting/writeAnswer'),
- answerRoute : require('./routes/setting/answer'),
+router.use('/registration', require('./post/registration'))
+router.use('/getList', require('./post/getList'))
+router.use('/delete', require('./post/delete'))
+router.use('/update', require('./post/update'))
+router.use('/myPost', require('./post/myPost'))
+router.use('/favorite', require('./post/favorite'))
+router.use('/interestFavorite', require('./post/interestFavorite'))
 
- chattingRoute : require('./routes/chat/chatting'),
- chattingListRoute : require('./routes/chat/chattingList'),
+router.use('/writeComment', require('./comment/writeComment'))
+router.use('/commentList', require('./comment/commentList'))
 
- townRegistrationRoute : require('./routes/town/townRegistration'),
- listRoute : require('./routes/town/list'),
- typeListRoute : require('./routes/town/typeList'),
+router.use('/writeNotice', require('./setting/writeNotice'))
+router.use('/notice', require('./setting/notice'))
+router.use('/writeQuestion', require('./setting/writeQuestion'))
+router.use('/question', require('./setting/question'))
+router.use('/writeAnswer', require('./setting/writeAnswer'))
+router.use('/answer', require('./setting/answer'))
 
- fcmRoute : require('./routes/fcm/save')
+router.use('/chatting', require('./chat/chatting'))
+router.use('/chattingList', require('./chat/chattingList'))
+router.use('/chatRoomSave', require('./chat/chatRoomSave'))
+router.use('/chatCommentSave', require('./chat/chatCommentSave'))
 
-}
+router.use('/townRegistration', require('./town/townRegistration'))
+router.use('/list', require('./town/list'))
+router.use('/typeList', require('./town/typeList'))
 
-
-
+router.use('/save', require('./fcm/save'))
+router.use('/fcm', require('./fcm/fcm'))
 
 module.exports = router;

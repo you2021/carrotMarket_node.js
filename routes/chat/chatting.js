@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const auth = require('../auth')
-const aa = require('./chat_class')
+const aa = require('../../db/chat/chat')
 
 router.get('/', async(req, res)=> {
 

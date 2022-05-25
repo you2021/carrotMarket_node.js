@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const auth = require('../auth')
-const aa = require('./mp_class')
+const aa = require('../../db/post/myPost')
 
 router.get('/', async (req, res, next) => {
 

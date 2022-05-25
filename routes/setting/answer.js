@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const aa = require('./answer_class')
+const aa = require('../../db/setting/answer')
 
 
 router.post('/', async (req, res)=>{

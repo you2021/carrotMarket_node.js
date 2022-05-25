@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const aa = require('./manager_class')
+const aa = require('../../db/user/manager')
 const auth = require('../auth')
 
 

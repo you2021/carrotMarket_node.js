@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const aa = require('./chat_class')
+const aa = require('../../db/chat/chat')
 
 router.post('/', async(req, res)=> {
 

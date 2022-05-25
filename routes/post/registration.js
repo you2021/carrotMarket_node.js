@@ -3,8 +3,8 @@ const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
 const auth = require('../auth')
-const aa = require('./regi_class')
-const bb = require('./getList_class')
+const aa = require('../../db/post/registration')
+const bb = require('../../db/post/getList')
 
 
 try {

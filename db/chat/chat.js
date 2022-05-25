@@ -30,4 +30,33 @@ module.exports = class{
             })
         })
     }
+
+    static chat_room = (room, my_id, your_id) => {
+        return new Promise((resolve, reject)=>{
+            pool.query(`INSERT INTO chat_room(roomKey, my_id, your_id) VALUES(?,?,?)`,[room,my_id,your_id],
+            (err, rows, fields)=>{
+                if(err){ 
+                     `err : ${console.log(err)} `;
+                     reject(err)
+                     return
+                }
+                resolve()
+            });
+        })
+    }
+
+    static chat_user = (room, my_id_, content) => {
+        return new Promise((resolve, reject)=>{
+            pool.query(`INSERT INTO chat_user(room, id, comment) VALUES(?,?,?)`,[room, my_id_, content],
+            (err, rows, fields)=>{
+                if(err){ 
+                     `err : ${console.log(err)} `;
+                     reject(err)
+                     return
+                }
+                resolve()
+            });
+        })
+    }
 }
+

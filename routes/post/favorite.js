@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const auth = require('../auth')
-const aa = require('./favorite_class')
+const aa = require('../../db/post/favorite')
 
 
 router.post('/', async (req, res) => {

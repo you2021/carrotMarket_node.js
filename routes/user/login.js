@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../auth')
-const aa = require('./login_class')
+const aa = require('../../db/user/login')
  
 router.post('/',  async (req, res) => {
     let id = req.body.id

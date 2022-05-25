@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const auth = require('../auth')
-const aa = require('./getList_class')
+const aa = require('../../db/post/getList')
 
 router.get('/', async (req, res)=>{
     

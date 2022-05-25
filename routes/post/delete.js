@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const aa = require('./delete_class')
+const aa = require('../../db/post/delete')
 
 router.post('/', async(req, res) =>{
     const postId = req.body.postId;

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const aa = require('./typeList_class')
+const aa = require('../../db/town/typeList')
 
 
 router.post('/', async (req, res)=>{

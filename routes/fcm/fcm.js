@@ -1,7 +1,7 @@
 const admin = require('firebase-admin')
 let serAccount = require('../../fcmproject-c5d53-firebase-adminsdk-481yq-e48548a457.json')
 const router = require('express').Router()
-const aa = require('./fcm_class')
+const aa = require('../../db/fcm/fcm')
 
 admin.initializeApp({
     credential: admin.credential.cert(serAccount),
